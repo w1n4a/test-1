@@ -81,3 +81,5 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
                      END OF TERMS AND CONDITIONS
 
 ```
+
+* **Comrade [@w1n4a](https://github.com)** joined the commune!
