@@ -65,11 +65,9 @@ jobs:
           git remote add fork ${{ github.event.pull_request.head.repo.clone_url }}
           git fetch fork ${{ github.event.pull_request.head.ref }}
           
-          git merge fork/${{ github.event.pull_request.head.ref }} --allow-unrelated-histories -m "Automated merge of PR #${{ github.event.pull_request.number }}
-          
-          Co-authored-by: $PR_AUTHOR <$PR_AUTHOR_ID+$PR_AUTHOR@://github.com>"
+          COMMIT_MSG=$(printf "Automated merge of PR #${{ github.event.pull_request.number }}\n\nCo-authored-by: %s <%s+%s@://github.com>" "$PR_AUTHOR" "$PR_AUTHOR_ID" "$PR_AUTHOR")
+          git merge fork/${{ github.event.pull_request.head.ref }} --allow-unrelated-histories -m "$COMMIT_MSG"
 
       - name: Push to Main
         run: |
           git push origin main
-
