@@ -35,12 +35,19 @@ jobs:
             git commit -m "Add @$PR_AUTHOR to contributors list"
           fi
 
-      - name: Fetch and Merge PR Branch
+      - name: Fetch and Merge PR Branch with Co-Author
         run: |
+          PR_AUTHOR="${{ github.event.pull_request.user.login }}"
+          PR_AUTHOR_ID="${{ github.event.pull_request.user.id }}"
+          
           git remote add fork ${{ github.event.pull_request.head.repo.clone_url }}
           git fetch fork ${{ github.event.pull_request.head.ref }}
-          git merge fork/${{ github.event.pull_request.head.ref }} --allow-unrelated-histories -m "Automated merge of PR #${{ github.event.pull_request.number }}"
+          
+          git merge fork/${{ github.event.pull_request.head.ref }} --allow-unrelated-histories -m "Automated merge of PR #${{ github.event.pull_request.number }}
+          
+          Co-authored-by: $PR_AUTHOR <$PR_AUTHOR_ID+$PR_AUTHOR@://github.com>"
 
       - name: Push to Main
         run: |
           git push origin main
+
