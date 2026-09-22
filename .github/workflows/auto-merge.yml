@@ -19,6 +19,28 @@ jobs:
           ref: main
           fetch-depth: 0
 
+      - name: Checkout Incoming Changes
+        uses: actions/checkout@v4
+        with:
+          repository: ${{ github.event.pull_request.head.repo.full_name }}
+          ref: ${{ github.event.pull_request.head.ref }}
+          path: incoming_code
+
+      - name: Install Tools for Safety Check
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y build-essential python3-pyflakes
+
+      - name: Run Safety Check
+        run: |
+          cd incoming_code
+          if ls *.py 1> /dev/null 2>&1; then
+            python3 -m pyflakes *.py
+          fi
+          if ls *.c *.cpp 1> /dev/null 2>&1; then
+            g++ -fsyntax-only *.c *.cpp
+          fi
+
       - name: Configure Git Author
         run: |
           git config --global user.name "Commune Automation Bot"
